@@ -1,0 +1,47 @@
+<template>
+<lightning-card  variant="Narrow"  title="FreshDesk Ticket" icon-name="standard:case">
+    <div class="slds-p-horizontal_small">
+        <lightning-input type="text" variant="standard" name="ContactName" label="Contact Name" required></lightning-input>
+        <lightning-input type="email" variant="standard" name="ContactEmail" label="Contact Email" required></lightning-input>
+
+        <lightning-input type="text" variant="standard" name="Subject" label="Subject" required></lightning-input>
+        <lightning-textarea type="email" variant="standard" name="Description" label="Description" required></lightning-textarea>
+
+        <lightning-combobox
+            name="Type"
+            label="Type"
+            placeholder="Select Type"
+            options={typeOptions}
+            required>
+        </lightning-combobox>
+
+        <lightning-combobox
+            name="Status"
+            label="Status"
+            placeholder="Select Status"
+            options={statusOptions}
+            required>
+        </lightning-combobox>
+
+        <lightning-combobox
+            name="Source"
+            label="Source"
+            placeholder="Select Source"
+            options={sourceOptions}
+            required>
+        </lightning-combobox>
+
+         <lightning-combobox
+            name="Priority"
+            label="Priority"
+            placeholder="Select Priority"
+            options={priorityOptions}
+            required>
+        </lightning-combobox>
+    </div>
+
+    <div class="slds-m-around_small">
+        <lightning-button variant="brand" label="Create Case" title="Create Case" onclick={handleClick}></lightning-button>
+    </div>
+</lightning-card>
+</template>
