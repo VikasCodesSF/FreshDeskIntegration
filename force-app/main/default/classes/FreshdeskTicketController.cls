@@ -1,8 +1,9 @@
 public class FreshdeskTicketController {
 	
     @AuraEnabled
-    public static void craeteTicket(Map<String, Object> inputMap){
+    public static HttpResponseWrapper craeteTicket(Map<String, Object> inputMap){
         System.Debug(inputMap);
-        FreshDeskService.createTicket(inputMap);
+        HttpResponseWrapper wrapper = FreshDeskService.createTicket(inputMap);
+        return wrapper;
     }
 }

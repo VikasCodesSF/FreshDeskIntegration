@@ -9,7 +9,7 @@ export default class FreshDeskTicket extends LightningElement {
         'Status': '2'
     };
 
-    get typeOptions(){
+    get typeOptions(){ 
         return [
             {label: 'Incident', value: 'Incident'}
         ]

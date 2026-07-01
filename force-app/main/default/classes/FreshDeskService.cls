@@ -1,7 +1,7 @@
 public class FreshDeskService {
     //VERSION 2 - Alternative - Ue custom label
     public static String ENDPOINT='https://deloitte-helpdesk.freshdesk.com';    
-    public static void createTicket(Map<String, Object> mapValue){
+    public static HttpResponseWrapper createTicket(Map<String, Object> mapValue){
         // Version 1
         //String userName = 'ozZ49gwpCTZkWlWYiifB'; -- Put this in Custom label
         //String password = 'X';
@@ -98,18 +98,19 @@ public class FreshDeskService {
         
         // Instantiate a new Http object
         Http h = new Http();
+        //Version 2: Adding Another class for better error handling
+         HttpResponseWrapper httpWrapper = new HttpResponseWrapper();
         //Version 2 - Try Catch block
         try{
             
             HttpResponse httpRes = h.send(req); 
-            
-            System.debug(httpRes.getStatusCode());
-            System.debug(httpRes.getBody());
-            
             if(httpRes.getStatusCode() == 200 || httpRes.getStatusCode() == 201){
-                //success                             
+                //success 
+                httpWrapper.isSuccess = true;                            
             }else{
-                //error
+                httpWrapper.isSuccess = false;
+            	httpWrapper.statusCode =httpRes.getStatusCode();
+            	httpWrapper.errorMessage = 'Unsuccessfully Request';
             }
             
         }catch(System.CalloutException ex){
@@ -118,12 +119,21 @@ public class FreshDeskService {
             System.debug('Message'+ ex.getMessage());
             System.debug('StraceTraceString'+ ex.getStackTraceString());
             System.debug('TypeName'+ ex.getTypeName());
+            httpWrapper.isSuccess = false;
+            httpWrapper.statusCode =400;
+            httpWrapper.message = '';
+            httpWrapper.errorMessage = ex.getMessage() +' Line Number '+ ex.getLineNumber() + ' Cause '+ ex.getCause() + ' StraceTraceString '+ ex.getStackTraceString();
         }catch(System.Exception ex){
             System.debug('Line Number'+ ex.getLineNumber());
             System.debug('Cause'+ ex.getCause());
             System.debug('Message'+ ex.getMessage());
             System.debug('StraceTraceString'+ ex.getStackTraceString());
             System.debug('TypeName'+ ex.getTypeName());
-        }       
-    } 
+            httpWrapper.isSuccess = false;
+            httpWrapper.statusCode =400;
+            httpWrapper.message = '';
+            httpWrapper.errorMessage = ex.getMessage() +' Line Number '+ ex.getLineNumber() + ' Cause '+ ex.getCause() + ' StraceTraceString '+ ex.getStackTraceString();
+        }
+        return httpWrapper;
+    }   
 }
