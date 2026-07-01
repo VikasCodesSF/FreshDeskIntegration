@@ -1,7 +1,7 @@
 public class FreshDeskService {
     //VERSION 2 - Alternative - Ue custom label
     public static String ENDPOINT='https://deloitte-helpdesk.freshdesk.com';    
-    public static void createTicket(){
+    public static void createTicket(Map<String, Object> mapValue){
         // Version 1
         //String userName = 'ozZ49gwpCTZkWlWYiifB'; -- Put this in Custom label
         //String password = 'X';
@@ -55,7 +55,7 @@ public class FreshDeskService {
             });*/
     
     //Version 4 -- Create Map before hand 
-     Map<String, Object> mapValue = new Map<String, Object>{
+      /* Map<String, Object> mapValue = new Map<String, Object>{
             'descriptionVar'=> 'Details about the refund credit...', 
              'subjectVar' => 'Issue in Refund', 
              'emailVar'=> 'vikas@outerspace.com',
@@ -71,7 +71,28 @@ public class FreshDeskService {
              "status": 2, 
              "source": 1 
         }
-        '''.template(mapValue);
+        '''.template(mapValue); */
+
+        //Version 5 -- Expecting Map of values from Apex claases FreshdeskTicketController anD LWC FreshDeskTicket
+      /* Map<String, Object> mapValue = new Map<String, Object>{
+            'descriptionVar'=> 'Details about the refund credit...', 
+             'subjectVar' => 'Issue in Refund', 
+             'emailVar'=> 'vikas@outerspace.com',
+             'priority' => 2
+            };*/
+        
+        String requestBody = '''
+        { 
+            "description": "${Description}", 
+             "subject": "${Subject}", 
+             "email": "${ContactEmail}", 
+             "name": "${ContactName}", 
+             "type": "${Typex}", 
+             "priority": ${Priority}, 
+             "status": ${Status}, 
+             "source": ${Source} 
+        }
+        '''.template(mapValue); 
             
         req.setBody(requestBody);
         

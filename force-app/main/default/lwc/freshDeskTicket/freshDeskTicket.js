@@ -1,6 +1,13 @@
 import { LightningElement } from 'lwc';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import craeteTicket from '@salesforce/apex/FreshdeskTicketController.craeteTicket';
 export default class FreshDeskTicket extends LightningElement {
 
+    isLoading = false;
+
+    ticketInformation={
+        'Status': '2'
+    };
 
     get typeOptions(){
         return [
@@ -39,9 +46,52 @@ export default class FreshDeskTicket extends LightningElement {
 
 
      handleClick(event){
-        //event.preventDefault();
+        event.preventDefault();
 
-        Console.log('Clicked');
-        alert('Clicked');
-     }
+        const allValid = [...this.template.querySelectorAll('lightning-input, lightning-textarea, lightning-combobox')]
+        .reduce((validSoFar, inputCmp) => {
+        return inputCmp.reportValidity() && validSoFar;
+        }, true);
+
+
+        if(allValid){
+            console.log('Clicked');
+            console.log(JSON.stringify(this.ticketInformation));
+            craeteTicket({ inputMap: this.ticketInformation })
+              .then(result => {
+                console.log('Result', result);
+                    this.dispatchEvent(
+                        new ShowToastEvent({
+                            title: 'Success',
+                            message: 'Ticket Created Successfullyy',
+                            variant: 'success',
+                            mode: 'dismissable'
+                        })
+                    );
+                })
+              .catch(error => {
+                console.error('Error:', error.body.message || error.message);
+                  this.dispatchEvent(
+                        new ShowToastEvent({
+                            title: 'Error',
+                            message: 'Error Occured',
+                            variant: 'error',
+                            mode: 'dismissable'
+                        })
+                    );
+            })
+            .finally(()=>{
+                this.isLoading = false;
+            })
+        }
+    }
+
+    changeHandler(event){
+         event.preventDefault();
+
+         let name= event.target.name;
+         let value= event.target.value;
+
+         this.ticketInformation[name]=value;   
+    }
 }

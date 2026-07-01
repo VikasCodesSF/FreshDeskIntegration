@@ -1,17 +1,21 @@
 <template>
 <lightning-card  variant="Narrow"  title="FreshDesk Ticket" icon-name="standard:case">
-    <div class="slds-p-horizontal_small">
-        <lightning-input type="text" variant="standard" name="ContactName" label="Contact Name" required></lightning-input>
-        <lightning-input type="email" variant="standard" name="ContactEmail" label="Contact Email" required></lightning-input>
 
-        <lightning-input type="text" variant="standard" name="Subject" label="Subject" required></lightning-input>
-        <lightning-textarea type="email" variant="standard" name="Description" label="Description" required></lightning-textarea>
+    <lightning-spinner  lwc:if= {isLoading} alternative-text="Creating Ticket in FreshDesk" size="small" variant="brand"></lightning-spinner>
+
+    <div class="slds-p-horizontal_small">
+        <lightning-input type="text" variant="standard" name="ContactName" label="Contact Name" required onchange={changeHandler} ></lightning-input>
+        <lightning-input type="email" variant="standard" name="ContactEmail" label="Contact Email" required onchange={changeHandler} ></lightning-input>
+
+        <lightning-input type="text" variant="standard" name="Subject" label="Subject" onchange={changeHandler} required></lightning-input>
+        <lightning-textarea type="email" variant="standard" name="Description" label="Description" onchange={changeHandler} required ></lightning-textarea>
 
         <lightning-combobox
-            name="Type"
+            name="Typex"
             label="Type"
             placeholder="Select Type"
             options={typeOptions}
+            onchange={changeHandler}
             required>
         </lightning-combobox>
 
@@ -20,6 +24,7 @@
             label="Status"
             placeholder="Select Status"
             options={statusOptions}
+            onchange={changeHandler}
             required>
         </lightning-combobox>
 
@@ -28,6 +33,7 @@
             label="Source"
             placeholder="Select Source"
             options={sourceOptions}
+            onchange={changeHandler}
             required>
         </lightning-combobox>
 
@@ -36,6 +42,7 @@
             label="Priority"
             placeholder="Select Priority"
             options={priorityOptions}
+            onchange={changeHandler}
             required>
         </lightning-combobox>
     </div>
